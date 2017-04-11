@@ -4,8 +4,8 @@ const OPEN_WEATHER_MAP_URL = 'http://api.openweathermap.org/data/2.5/weather?uni
 
 module.exports = {
     getTemp: function(location) {
-        var encodedLocation = encodeURIComponent(location);
-        var requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
+        var encodedLocation = encodeURIComponent(location); //перекодируем пробелы итд
+        var requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`; //es6 template strings
 
         return axios.get(requestUrl).then(function(res) {
             if (res.data.cod && res.data.message) {
@@ -14,7 +14,9 @@ module.exports = {
                 return res.data.main.temp;
             }
         }, function(res) {
-            throw new Error(res.data.message);
-        })
+
+            //throw new Error(res.data.message); axios по новому обрабатывает ошибки
+            throw new Error("Unable to fetch weather for that location");
+        });
     }
 }
